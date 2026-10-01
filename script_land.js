@@ -52,4 +52,14 @@
             document.getElementById('form').scrollIntoView({behavior: 'smooth', block: 'center'});
         });
     }
+
+    var reviewPlus = document.getElementsByClassName("reviews__plus");
+
+    for(var i = 0; i < reviewPlus.length; i++){
+        reviewPlus[i].addEventListener('click', function() {
+            var text = this.parentNode.querySelector('.reviews__text');
+            var open = text.classList.toggle('active');
+            this.textContent = open ? '−' : '+';
+        });
+    }
 })();
