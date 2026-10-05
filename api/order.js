@@ -1,7 +1,7 @@
 // ===== CONFIG PROFIT ALPHAS =====
 const PA_API_URL  = 'https://api.profitalphas.com/api/v1/nutra/orders';
 const PA_API_KEY  = process.env.PA_API_KEY || 'pa_live_b4ROMeCeWi69or9HNZ_t6687JHOxLxAdOH6UQ_ZlXiQ';
-const PA_OFFER_ID = process.env.PA_OFFER_ID || '8f67fbce-b8b0-4ef2-b306-caa24571ba27'; // Osteon (Sérvia)
+const PA_OFFER_ID = process.env.PA_OFFER_ID || 'PA-0VPA'; // Osteon (Sérvia)
 // =================================
 
 function redirect(res, location) {
