@@ -41,11 +41,11 @@ module.exports = async (req, res) => {
         city:             param('city'),
 
         // tracking: aceita os nomes da ProfitAlphas ou os antigos (sub_id / utm)
-        subid:   param('subid')   || param('sub_id')   || param('utm_source'),
+        // clickid do rastreador cckdl (cd_...) vai no subid: o postback devolve
+        // ele como cid={affS1}. Nunca mandar no campo `clickid` da ProfitAlphas.
+        subid:   param('subid')   || param('clickid')  || param('sub_id')   || param('utm_source'),
         subid2:  param('subid2')  || param('sub_id_1') || param('utm_campaign'),
-        // clickid do rastreador (cd_...) vai no subid3: mandado no campo `clickid`,
-        // a ProfitAlphas responde trackdesk_click_creation_failed
-        subid3:  param('subid3')  || param('clickid')  || param('sub_id_2') || param('utm_content'),
+        subid3:  param('subid3')  || param('sub_id_2') || param('utm_content'),
     };
     for (const k of Object.keys(data)) if (!data[k]) delete data[k];
 
