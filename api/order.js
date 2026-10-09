@@ -43,8 +43,9 @@ module.exports = async (req, res) => {
         // tracking: aceita os nomes da ProfitAlphas ou os antigos (sub_id / utm)
         subid:   param('subid')   || param('sub_id')   || param('utm_source'),
         subid2:  param('subid2')  || param('sub_id_1') || param('utm_campaign'),
-        subid3:  param('subid3')  || param('sub_id_2') || param('utm_content'),
-        clickid: param('clickid') || param('gclid')    || param('sub_id_3'),
+        // clickid do rastreador (cd_...) vai no subid3: mandado no campo `clickid`,
+        // a ProfitAlphas responde trackdesk_click_creation_failed
+        subid3:  param('subid3')  || param('clickid')  || param('sub_id_2') || param('utm_content'),
     };
     for (const k of Object.keys(data)) if (!data[k]) delete data[k];
 
