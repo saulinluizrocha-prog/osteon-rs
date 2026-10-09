@@ -1,14 +1,15 @@
+// Revalida o lead, envia para a ProfitAlphas e redireciona para a página de sucesso (padrão Nautubone MK).
+const { normalizePhone } = require('../js/phone.js');
+
 // ===== CONFIG PROFIT ALPHAS =====
 const PA_API_URL  = 'https://api.profitalphas.com/api/v1/nutra/orders';
 const PA_API_KEY  = process.env.PA_API_KEY || 'pa_live_b4ROMeCeWi69or9HNZ_t6687JHOxLxAdOH6UQ_ZlXiQ';
 const PA_OFFER_ID = process.env.PA_OFFER_ID || 'PA-0VPA'; // Osteon (Sérvia)
+const GEO = 'RS';
 // =================================
 
-function redirect(res, location) {
-    res.statusCode = 303;
-    res.setHeader('Location', location);
-    res.end();
-}
+// Opcional: URL (ex.: Google Apps Script) que recebe uma cópia de todo lead que NÃO entrou na ProfitAlphas
+const BACKUP_WEBHOOK = process.env.LEAD_BACKUP_WEBHOOK || '';
 
 function visitorIp(req) {
     const h = req.headers;
@@ -16,8 +17,28 @@ function visitorIp(req) {
     return String(raw).split(',')[0].trim();
 }
 
+// Nunca deixa um lead sumir em silêncio: registra no log da Vercel e, se configurado, no webhook de backup
+async function backupLead(reason, lead) {
+    console.error('LEAD_ERROR', reason, JSON.stringify(lead));
+    if (!BACKUP_WEBHOOK) return;
+    try {
+        await fetch(BACKUP_WEBHOOK, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ reason, date: new Date().toISOString(), offer: PA_OFFER_ID, geo: GEO, ...lead }),
+            signal: AbortSignal.timeout(5000),
+        });
+    } catch (e) {
+        console.error('Backup webhook error', e.message);
+    }
+}
+
 module.exports = async (req, res) => {
-    if (req.method !== 'POST') return redirect(res, '/');
+    if (req.method !== 'POST') {
+        res.statusCode = 302;
+        res.setHeader('Location', '/');
+        return res.end();
+    }
 
     let body = req.body || {};
     if (typeof body === 'string') body = Object.fromEntries(new URLSearchParams(body));
@@ -25,13 +46,27 @@ module.exports = async (req, res) => {
     const param = (key) => String(body[key] ?? query[key] ?? '').trim();
 
     const name = param('name');
-    const phone = param('phone');
-    if (!name || !phone) return redirect(res, req.headers.referer || '/');
+    const rawPhone = param('phone');
+    const phone = normalizePhone(rawPhone, GEO);
+    const https = (req.headers['x-forwarded-proto'] || 'https') === 'https';
+
+    // Redirect limpo: dados do lead vão num cookie de 30 min, nunca na URL
+    const redirect = (success, orderId) => {
+        if (success) {
+            const value = encodeURIComponent(JSON.stringify({ name, phone: phone.display, order: orderId || '' }));
+            res.setHeader('Set-Cookie', `os_lead=${value}; Max-Age=1800; Path=/; SameSite=Lax${https ? '; Secure' : ''}`);
+        }
+        res.statusCode = 303;
+        res.setHeader('Location', `/success.html?success=${success ? 1 : 0}`);
+        res.end();
+    };
+
+    const gclid = param('gclid') || param('gbraid') || param('wbraid');
 
     const data = {
         offer_id:         PA_OFFER_ID,
         name,
-        phone,
+        phone:            phone ? phone.intl : rawPhone, // 381641234567, como no exemplo da documentação
         user_agent:       req.headers['user-agent'] || 'unknown',
         ip:               visitorIp(req),
         referer:          param('referer'),
@@ -40,16 +75,21 @@ module.exports = async (req, res) => {
         address:          param('address'),
         city:             param('city'),
 
-        // tracking: aceita os nomes da ProfitAlphas ou os antigos (sub_id / utm)
-        // clickid do rastreador cckdl (cd_...) vai no subid: o postback devolve
-        // ele como cid={affS1}. Nunca mandar no campo `clickid` da ProfitAlphas.
-        subid:   param('subid')   || param('clickid')  || param('sub_id')   || param('utm_source'),
-        subid2:  param('subid2')  || param('sub_id_1') || param('utm_campaign'),
-        subid3:  param('subid3')  || param('sub_id_2') || param('utm_content'),
+        // subid  = clickid do cckdl (cd_...): o postback devolve como cid={affS1}.
+        //          Nunca mandar no campo `clickid` da ProfitAlphas (trackdesk_click_creation_failed).
+        // subid2 = gclid/gbraid/wbraid do Google Ads
+        subid:   param('subid')  || param('clickid') || param('sub_id')   || param('utm_source'),
+        subid2:  param('subid2') || gclid            || param('sub_id_1') || param('utm_campaign'),
+        subid3:  param('subid3') || param('sub_id_2') || param('utm_content'),
     };
     for (const k of Object.keys(data)) if (!data[k]) delete data[k];
 
-    let status = 0, text = '', result = null;
+    // Revalidação no servidor (mesma regra do formulário)
+    if (name.length < 3 || !phone) {
+        await backupLead('invalid_params', { ...data, raw_phone: rawPhone });
+        return redirect(false);
+    }
+
     try {
         const r = await fetch(PA_API_URL, {
             method: 'POST',
@@ -61,19 +101,21 @@ module.exports = async (req, res) => {
             body: new URLSearchParams(data).toString(),
             signal: AbortSignal.timeout(25000),
         });
-        status = r.status;
-        text = await r.text();
+        const text = await r.text();
+        let result = null;
         try { result = JSON.parse(text); } catch (e) {}
+
+        if (result && result.success) {
+            console.log('LEAD_OK', JSON.stringify({
+                order_id: result.order_id, tracking_id: result.tracking_id, status: result.status,
+                subid: data.subid, subid2: data.subid2,
+            }));
+            return redirect(true, result.order_id);
+        }
+
+        await backupLead(`api_${r.status}: ${(result && result.error) || text.slice(0, 200)}`, data);
     } catch (e) {
-        text = 'fetch error: ' + e.message;
+        await backupLead(`exception: ${e.message}`, data);
     }
-
-    if (result && result.success) {
-        console.log('LEAD_OK', JSON.stringify({ order_id: result.order_id, status: result.status, subid: data.subid }));
-        return redirect(res, '/success.html?id=' + encodeURIComponent(result.order_id || ''));
-    }
-
-    // Falhou: lead + erro ficam nos logs da Vercel (Project > Logs) para não perder o pedido
-    console.error('LEAD_ERROR', JSON.stringify({ http: status, response: text, lead: data }));
-    return redirect(res, '/success.html');
+    return redirect(false);
 };

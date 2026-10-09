@@ -133,6 +133,20 @@
         .privacy svg { width: 14px; height: 14px; flex: 0 0 14px; color: var(--green-dark); }
         .foot { text-align: center; font-size: 12px; color: #93a19b; margin-top: 10px; }
 
+        /* conferir dados / erro */
+        .list-info__list { list-style: none; }
+        .list-info__item { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 15px; font-weight: 600; }
+        .list-info__item:last-child { border-bottom: 0; }
+        .list-info__text { font-weight: 400; color: var(--muted); flex: none; }
+        .fix-link { display: block; text-align: center; margin-top: 12px; font-size: 13.5px; color: var(--green-dark); }
+        .phone-tip { margin-top: 12px; font-size: 14px; color: #1e3a66; background: #fff; border-radius: 10px; padding: 10px 12px; border: 1px dashed var(--blue-line); }
+        .fail { text-align: center; padding: 32px 20px; margin-top: 28px; }
+        .fail .check { background: var(--red); box-shadow: 0 0 0 10px #fde8e8; }
+        .fail .check svg { stroke-dashoffset: 0; animation: none; }
+        .fail h1 { font-size: 24px; margin-bottom: 8px; }
+        .fail p { color: var(--muted); margin-bottom: 20px; }
+        .btn { display: inline-block; background: var(--green); color: #fff; font-weight: 700; text-decoration: none; padding: 14px 28px; border-radius: 12px; }
+
         .fade { opacity: 0; transform: translateY(12px); animation: up .5s ease forwards; }
         @keyframes up { to { opacity: 1; transform: none; } }
         @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } .fade { opacity: 1; transform: none; } .check svg { stroke-dashoffset: 0; } }
@@ -153,10 +167,11 @@
 
     <main class="wrap">
 
+      <div id="ok" hidden>
         <section class="hero">
             <div class="check"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
             <h1>Hvala! Vaša porudžbina je uspešno primljena</h1>
-            <p>Sve je u redu – Vaš zahtev je zaveden u našem sistemu.</p>
+            <p id="helloText">Sve je u redu – Vaš zahtev je zaveden u našem sistemu.</p>
             <div class="order-id" id="orderBox" hidden>Broj porudžbine: <b id="orderId"></b></div>
         </section>
 
@@ -209,6 +224,7 @@
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Uključite zvuk na telefonu</li>
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Razgovor je besplatan i traje samo 2–3 minuta</li>
             </ul>
+            <p class="phone-tip">Zvaćemo Vas na <b id="tipPhone">Vaš broj</b>. Poziv može doći sa <b>nepoznatog broja</b> – molimo Vas da se javite.</p>
         </section>
 
         <!-- GATILHO 3: 30 minutos -->
@@ -220,6 +236,16 @@
                 <div class="timer__sep">:</div>
                 <div class="timer__box"><div class="timer__num" id="tSec">00</div><div class="timer__lbl">sekundi</div></div>
             </div>
+        </section>
+
+        <!-- Conferir dados -->
+        <section class="card list-info fade" id="dataCard" style="animation-delay:.45s">
+            <h2 class="h2">Proverite još jednom svoje podatke</h2>
+            <ul class="list-info__list">
+                <li class="list-info__item"><span class="list-info__text">Vaše ime:</span> <span id="infoName"></span></li>
+                <li class="list-info__item"><span class="list-info__text">Vaš telefon:</span> <span id="infoPhone"></span></li>
+            </ul>
+            <a class="fix-link" href="/#form">Pogrešan broj? Unesite podatke ponovo</a>
         </section>
 
         <!-- Próximos passos -->
@@ -272,17 +298,47 @@
             </div>
         </section>
 
+      </div>
+
+        <!-- Erro: a ProfitAlphas não aceitou o pedido -->
+        <section class="card fail" id="fail" hidden>
+            <div class="check"><svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17"/></svg></div>
+            <h1>Nešto nije u redu</h1>
+            <p>Vaša porudžbina nije poslata. Molimo Vas da proverite podatke i pokušate ponovo.</p>
+            <a class="btn" href="/#form">Pokušajte ponovo</a>
+        </section>
+
         <p class="foot">© <span id="year"></span> Osteon. Sva prava zadržana.</p>
     </main>
 
     <script>
         (function () {
-            var id = new URLSearchParams(window.location.search).get('id');
-            if (id) {
-                document.getElementById('orderId').textContent = id;
+            var ok = new URLSearchParams(window.location.search).get('success') !== '0';
+
+            // Dados do pedido vêm do cookie os_lead (30 min), nunca da URL
+            var lead = {};
+            try {
+                var m = document.cookie.match(/(?:^|;\s*)os_lead=([^;]*)/);
+                if (m) lead = JSON.parse(decodeURIComponent(m[1])) || {};
+            } catch (e) {}
+
+            document.getElementById('year').textContent = new Date().getFullYear();
+            document.getElementById(ok ? 'ok' : 'fail').hidden = false;
+            if (!ok) { document.title = 'Porudžbina nije poslata | Osteon'; return; }
+
+            if (lead.order) {
+                document.getElementById('orderId').textContent = lead.order;
                 document.getElementById('orderBox').hidden = false;
             }
-            document.getElementById('year').textContent = new Date().getFullYear();
+            if (lead.name) {
+                document.getElementById('helloText').textContent = 'Hvala, ' + lead.name.split(' ')[0] + '! Naš operater će Vas uskoro kontaktirati telefonom.';
+                document.getElementById('infoName').textContent = lead.name;
+                document.getElementById('infoPhone').textContent = lead.phone || '';
+                document.getElementById('tipPhone').textContent = lead.phone || 'Vaš broj';
+            } else {
+                // Sem cookie (expirou ou acesso direto): só o agradecimento, sem campos vazios
+                document.getElementById('dataCard').hidden = true;
+            }
 
             setTimeout(function () { document.getElementById('stockFill').style.width = '87%'; }, 400);
 
