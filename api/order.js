@@ -1,14 +1,15 @@
-// Revalida o lead, envia para a ProfitAlphas e redireciona para a página de sucesso (padrão Nautubone MK).
+// Revalida o lead, envia para a DrCash e redireciona para a página de sucesso (padrão Nautubone MK).
 const { normalizePhone } = require('../js/phone.js');
 
-// ===== CONFIG PROFIT ALPHAS =====
-const PA_API_URL  = 'https://api.profitalphas.com/api/v1/nutra/orders';
-const PA_API_KEY  = process.env.PA_API_KEY || 'pa_live_b4ROMeCeWi69or9HNZ_t6687JHOxLxAdOH6UQ_ZlXiQ';
-const PA_OFFER_ID = process.env.PA_OFFER_ID || 'PA-0VPA'; // Osteon (Sérvia)
+// ===== CONFIG DR CASH =====
+const DC_API_URL     = 'https://affiliate-api.drcash.pro/v1/order';
+// O token fica só na variável de ambiente DRCASH_TOKEN da Vercel: o repositório no GitHub é público
+const DC_TOKEN       = process.env.DRCASH_TOKEN || '';
+const DC_STREAM_CODE = process.env.DRCASH_STREAM || 'jv6fo'; // Osteon (Sérvia)
 const GEO = 'RS';
-// =================================
+// ==========================
 
-// Opcional: URL (ex.: Google Apps Script) que recebe uma cópia de todo lead que NÃO entrou na ProfitAlphas
+// Opcional: URL (ex.: Google Apps Script) que recebe uma cópia de todo lead que NÃO entrou na DrCash
 const BACKUP_WEBHOOK = process.env.LEAD_BACKUP_WEBHOOK || '';
 
 function visitorIp(req) {
@@ -25,7 +26,7 @@ async function backupLead(reason, lead) {
         await fetch(BACKUP_WEBHOOK, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ reason, date: new Date().toISOString(), offer: PA_OFFER_ID, geo: GEO, ...lead }),
+            body: JSON.stringify({ reason, date: new Date().toISOString(), stream: DC_STREAM_CODE, geo: GEO, ...lead }),
             signal: AbortSignal.timeout(5000),
         });
     } catch (e) {
@@ -63,59 +64,57 @@ module.exports = async (req, res) => {
 
     const gclid = param('gclid') || param('gbraid') || param('wbraid');
 
-    const data = {
-        offer_id:         PA_OFFER_ID,
-        name,
-        phone:            phone ? phone.intl : rawPhone, // 381641234567, como no exemplo da documentação
-        user_agent:       req.headers['user-agent'] || 'unknown',
-        ip:               visitorIp(req),
-        referer:          param('referer'),
-        domain:           req.headers.host || '',
-        landing_page_url: param('landing_page_url'),
-        address:          param('address'),
-        city:             param('city'),
-
-        // subid  = clickid do cckdl (cd_...): o postback devolve como cid={affS1}.
-        //          Nunca mandar no campo `clickid` da ProfitAlphas (trackdesk_click_creation_failed).
-        // subid2 = gclid/gbraid/wbraid do Google Ads
-        subid:   param('subid')  || param('clickid') || param('sub_id')   || param('utm_source'),
-        subid2:  param('subid2') || gclid            || param('sub_id_1') || param('utm_campaign'),
-        subid3:  param('subid3') || param('sub_id_2') || param('utm_content'),
+    // sub1 = clickid do cckdl (cd_...), para o postback devolver ao rastreador
+    // sub5 = gclid/gbraid/wbraid do Google Ads
+    const subs = {
+        sub1: param('sub1') || param('clickid') || param('subid'),
+        sub2: param('sub2') || param('utm_campaign'),
+        sub3: param('sub3') || param('utm_content'),
+        sub4: param('sub4') || param('utm_source'),
+        sub5: param('sub5') || gclid,
     };
-    for (const k of Object.keys(data)) if (!data[k]) delete data[k];
+    for (const k of Object.keys(subs)) if (!subs[k]) delete subs[k];
+
+    const client = {
+        phone: phone ? phone.intl : rawPhone, // 381641234567
+        name,
+        ip: visitorIp(req),
+    };
+    const lead = { ...client, raw_phone: rawPhone, ...subs };
 
     // Revalidação no servidor (mesma regra do formulário)
     if (name.length < 3 || !phone) {
-        await backupLead('invalid_params', { ...data, raw_phone: rawPhone });
+        await backupLead('invalid_params', lead);
+        return redirect(false);
+    }
+    if (!DC_TOKEN) {
+        await backupLead('missing_DRCASH_TOKEN', lead);
         return redirect(false);
     }
 
     try {
-        const r = await fetch(PA_API_URL, {
+        const r = await fetch(DC_API_URL, {
             method: 'POST',
             headers: {
-                'X-API-KEY': PA_API_KEY,
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + DC_TOKEN,
             },
-            body: new URLSearchParams(data).toString(),
+            body: JSON.stringify({ stream_code: DC_STREAM_CODE, client, ...subs }),
             signal: AbortSignal.timeout(25000),
         });
         const text = await r.text();
         let result = null;
         try { result = JSON.parse(text); } catch (e) {}
 
-        if (result && result.success) {
-            console.log('LEAD_OK', JSON.stringify({
-                order_id: result.order_id, tracking_id: result.tracking_id, status: result.status,
-                subid: data.subid, subid2: data.subid2,
-            }));
-            return redirect(true, result.order_id);
+        if (r.status === 200) {
+            const orderId = (result && (result.uuid || result.order_id || result.id)) || '';
+            console.log('LEAD_OK', JSON.stringify({ order: orderId, response: text.slice(0, 300), sub1: subs.sub1, sub5: subs.sub5 }));
+            return redirect(true, orderId);
         }
 
-        await backupLead(`api_${r.status}: ${(result && result.error) || text.slice(0, 200)}`, data);
+        await backupLead(`api_${r.status}: ${text.slice(0, 300)}`, lead);
     } catch (e) {
-        await backupLead(`exception: ${e.message}`, data);
+        await backupLead(`exception: ${e.message}`, lead);
     }
     return redirect(false);
 };

@@ -2,7 +2,7 @@
 // Se o lead voltar depois sem parâmetros na URL, usa o último tracking salvo.
 // O clickid do cckdl (cd_...) é colocado pelo próprio script do cckdl e não passa por aqui.
 (function () {
-    var KEYS = ['gclid', 'gbraid', 'wbraid', 'subid', 'subid2', 'subid3',
+    var KEYS = ['gclid', 'gbraid', 'wbraid', 'sub1', 'sub2', 'sub3', 'sub4', 'sub5',
         'utm_campaign', 'utm_source', 'utm_medium', 'utm_term', 'utm_content'];
     var STORE = 'os_tracking';
     var TTL = 30 * 24 * 60 * 60 * 1000;
