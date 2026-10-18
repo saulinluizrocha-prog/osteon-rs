@@ -115,6 +115,15 @@
             .ost-sticky__info b{display:block;font-size:18px;color:#de3875}
             .ost-sticky__btn{flex:0 0 auto;background:linear-gradient(to right,#1e9c57 0,#2fc172 50%,#1e9c57 100%);color:#fff;font-weight:900;font-size:17px;text-decoration:none;padding:12px 20px;border-radius:6px;box-shadow:0 4px 0 #147a42}
             body{padding-bottom:72px}
+            /* Primeira tela no celular: título, tubo menor e formulário antes dos bullets */
+            header.header .header__content{flex-direction:column;flex-wrap:nowrap;align-items:center}
+            header.header .header__about{display:contents}
+            header.header .header__title{order:1;align-self:stretch;margin-bottom:0}
+            header.header .ost-hero-sub{order:2;align-self:stretch}
+            header.header .header__prod{order:3;margin:0 auto 12px}
+            header.header .header__prod img{height:170px;width:auto}
+            header.header .form{order:4}
+            header.header .header__features{order:5;align-self:stretch;margin-top:24px}
         }
     </style>
 
