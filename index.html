@@ -91,6 +91,31 @@
         .ost-ftr strong{color:#1d2731 !important}
         .ost-ftr__copy{margin-top:14px !important;font-size:12px !important;color:#8a949e !important}
         .ost-ftr{position:relative !important;z-index:5 !important}
+        /* COPY FUNDO DE FUNIL — 18/10 */
+        .ost-hero-sub{margin:-34px 0 30px;font-size:21px;line-height:1.4;color:#3a3a3a}
+        .ost-hero-sub b{color:#1f7a4d}
+        .form__footer{color:#1f7a4d}
+        .ost-trust__item b{color:#1f7a4d}
+        .subtitle{display:inline-block}
+        #sastav .subtitle{background:linear-gradient(90deg,#2f80c9 0%,#2f80c9 30%,#e8572e 70%,#e8572e 100%);color:#fff;padding:8px 18px;border-radius:30px}
+        .ost-yes{color:#1f7a4d}
+        .ost-no{color:#8a949e}
+        .ost-stack{max-width:640px;margin:26px auto 0;background:#fff;border:2px dashed #1f7a4d;border-radius:14px;padding:22px 24px;text-align:left}
+        .ost-stack__title{font-size:19px;font-weight:700;color:#1d2731;margin:0 0 12px}
+        .ost-stack__list{list-style:none;margin:0 0 14px;padding:0}
+        .ost-stack__list li{position:relative;padding:0 0 9px 28px;font-size:16px;line-height:1.45;color:#3a3a3a}
+        .ost-stack__list li::before{content:"✓";position:absolute;left:0;top:0;font-weight:900;color:#1f7a4d}
+        .ost-stack__cta{margin:0;font-size:15px;font-weight:700;color:#1d2731}
+        .ost-sticky{display:none}
+        @media (max-width:768px){
+            .ost-hero-sub{margin:6px 0 18px;font-size:17px}
+            .ost-sticky{display:flex;align-items:center;justify-content:space-between;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:999;background:#fff;padding:10px 16px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -4px 16px rgba(20,30,40,.14);transition:transform .25s}
+            .ost-sticky.is-hidden{transform:translateY(110%)}
+            .ost-sticky__info{font-size:13px;line-height:1.3;color:#4a5560}
+            .ost-sticky__info b{display:block;font-size:18px;color:#de3875}
+            .ost-sticky__btn{flex:0 0 auto;background:linear-gradient(to right,#dd3472 0,#ff5594 50%,#dd3472 100%);color:#fff;font-weight:900;font-size:17px;text-decoration:none;padding:12px 20px;border-radius:6px;box-shadow:0 4px 0 #c62963}
+            body{padding-bottom:72px}
+        }
     </style>
 
     <!-- SCHEMA MARKUP (JSON-LD @graph) -->
@@ -175,12 +200,12 @@
           "review": [
             {
               "@type": "Review",
-              "name": "Gel mi je postao deo svakodnevice",
+              "name": "Bila sam sumnjičava – ali ništa nisam plaćala unapred",
               "author": {
                 "@type": "Person",
                 "name": "Gordana"
               },
-              "reviewBody": "Za Osteon sam čula od prijateljice. Gel nanosim ujutru i uveče na kolena i lagano umasiram – mentol daje prijatan osećaj svežine. Sviđa mi se što je jednostavan za upotrebu i što mi je ta kratka masaža postala mali ritual nege. Paket je stigao bez problema, a platila sam tek kada sam ga preuzela."
+              "reviewBody": "Iskreno, nisam sklona kupovini preko interneta. Ali ovde se ništa ne plaća unapred: operater me je pozvao, sve mi objasnio, a platila sam kuriru tek kada sam preuzela paket. Gel nanosim ujutru i uveče na kolena i lagano umasiram – mentol daje prijatan osećaj svežine, a ta kratka masaža mi je postala mali ritual nege."
             },
             {
               "@type": "Review",
@@ -229,6 +254,22 @@
               "acceptedAnswer": {
                 "@type": "Answer",
                 "text": "Operater Vas poziva na ostavljeni broj telefona, potvrđuje porudžbinu i adresu za dostavu, a zatim paket šalje kurirska služba. Ako ste pogrešili u podacima, pošaljite formular ponovo – operater će sve proveriti u pozivu."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Kada stiže paket?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Posle potvrde u pozivu paket šalje kurirska služba na adresu koju ste naveli, bilo gde u Srbiji. Tačan rok dostave operater Vam kaže u pozivu, a kurir Vas po pravilu zove na dan dostave."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Šta ako se predomislim?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Dok operater ne potvrdi porudžbinu, nemate nikakvu obavezu. Posle prijema imate zakonsko pravo na odustanak od 14 dana za neotvoren proizvod, u skladu sa Zakonom o zaštiti potrošača."
               }
             },
             {
@@ -287,23 +328,24 @@
                 <div class="header__logo"></div>
                 <nav class="nav">
                     <ul class="nav__list">
-                        <li class="nav__item"><span class="nav__link"><span class="main-color">Za</span> svakodnevnu negu</span>
+                        <li class="nav__item"><span class="nav__link"><span class="main-color">Plaćanje</span> pouzećem</span>
                         </li>
-                        <li class="nav__item"><span class="nav__link"><span class="main-color">Sa</span> biljnim ekstraktima</span>
+                        <li class="nav__item"><span class="nav__link"><span class="main-color">Dostava</span> širom Srbije</span>
                         </li>
-                        <li class="nav__item"><span class="nav__link"><span class="main-color">Za</span> aktivan život</span>
+                        <li class="nav__item"><span class="nav__link"><span class="main-color">Poziv</span> operatera pre slanja</span>
                         </li>
                     </ul>
                 </nav>
             </div>
             <div class="header__content">
                 <div class="header__about">
-                    <h1 class="header__title"><span class="main-color">Osteon —</span> gel za negu zglobova</h1>
+                    <h1 class="header__title"><span class="main-color">Osteon gel</span> za zglobove</h1>
+                    <p class="ost-hero-sub">Poručite danas – <b>platite tek kada Vam kurir donese paket.</b></p>
                     <ul class="header__features">
-                        <li class="header__features-item"><b>Osećaj svežine</b> zahvaljujući mentolu</li>
-                        <li class="header__features-item"><b>Prijatna toplota</b> uz kapsaicin</li>
-                        <li class="header__features-item"><b>Ginko biloba i divlji kesten</b> u formuli</li>
-                        <li class="header__features-item"><b>Plaćanje pouzećem</b> – ništa ne plaćate unapred</li>
+                        <li class="header__features-item"><b>Hladno–toplo formula</b> – mentol osveži, kapsaicin zagreje</li>
+                        <li class="header__features-item"><b>Za kolena, leđa, vrat i ramena</b></li>
+                        <li class="header__features-item"><b>Brzo se upija</b> – bez čekanja</li>
+                        <li class="header__features-item"><b>Ni dinar unapred</b> – plaćate kuriru</li>
                     </ul>
                 </div>
                 <div class="header__prod">
@@ -328,15 +370,15 @@
                     <div class="form__body">
                         <form action="/land/order" method="POST" class="x_order_form al-form">
                             <select name="country" class="al-country" style="display: none;"></select>
-                            <p class="form__text">Kako Vam se obraćati?
+                            <p class="form__text">Ostavite ime i telefon – operater Vas zove radi potvrde
                             </p>
                             <label class="form__label form__label--name"><input type="text" name="name" placeholder="Moje ime" required="" autocomplete="name"></label>
                             <label class="form__label form__label--tel"><input type="tel" name="phone" placeholder="Moj telefon" required="" autocomplete="tel"></label>
-                            <button class="btn">Poručite <span class="btn__small">sa popustom</span></button>
+                            <button class="btn">Poručite <span class="btn__small">plaćate kuriru</span></button>
                             <p class="form__lastpack">Podatke koristimo samo da bismo Vas pozvali radi potvrde i dostave porudžbine.</p>
                         </form>
                     </div>
-                    <p class="form__footer">Plaćanje pouzećem – plaćate pri preuzimanju</p>
+                    <p class="form__footer">Bez avansa i bez kartice – plaćate pri preuzimanju</p>
                 </div>
             </div>
             <div class="header__woman"><img src="img/girl-header.png" alt=""></div>
@@ -357,8 +399,8 @@
 
     <section class="factors block">
         <div class="container">
-            <h2 class="title title-factors">Šta svakodnevno opterećuje zglobove?</h2>
-            <p class="ost-lead">Kolena, leđa, ramena i vrat nose nas kroz svaki dan – na poslu, u kući, u šetnji i na treningu. Sitni napori se skupljaju, a mi ih najčešće ni ne primećujemo. Evo šta zglobove opterećuje najviše:</p>
+            <h2 class="title title-factors">Prepoznajete li se u ovome?</h2>
+            <p class="ost-lead">Stepenice na kraju dugog dana. Leđa posle sati za računarom. Ramena posle rada u bašti. Kolena, leđa i vrat nose nas kroz svaki dan – a retko im posvetimo makar dva minuta pažnje. Evo šta ih opterećuje najviše:</p>
             <div class="factors__wrap">
                 <div class="factors__item factors__item-age">
                     <p class="factors__name">Godine:</p>
@@ -447,43 +489,43 @@
                     </ul>
                 </div>
             </div>
-            <p class="factors__conclusion">Zglobovi rade za Vas svakog dana – zaslužuju i svakodnevnu negu.</p>
+            <p class="factors__conclusion">Zglobovi rade za Vas svakog dana. Dva minuta nege uveče – to je sve što Osteon traži od Vas.</p>
         </div>
     </section>
 
     <section class="solution block wave" id="sastav">
         <div class="container">
             <h2 class="title title-solution"><span class="main-color">Osteon</span><br>gel za svakodnevnu negu zglobova</h2>
-            <p class="subtitle">Šta sadrži formula</p>
+            <p class="subtitle">Hladno–toplo formula: šta je u tubi i šta to znači za Vas</p>
             <div class="solution__items">
                 <div class="solution__row">
                     <div class="item">
-                        <p class="item__descr title-color"><span class="text-bold">Mentol,</span><br>za prijatan osećaj svežine odmah posle nanošenja</p>
+                        <p class="item__descr title-color"><span class="text-bold">Mentol,</span><br>svežina koju osetite čim nanesete gel – masaža prija od prvog dodira</p>
                     </div>
                     <div class="item">
-                        <p class="item__descr title-color"><span class="text-bold">Kapsaicin,</span><br>za prijatan osećaj toplote tokom masaže</p>
-                    </div>
-                </div>
-                <div class="solution__row">
-                    <div class="item">
-                        <p class="item__descr title-color"><span class="text-bold">Ekstrakt divljeg kestena,</span><br>biljni sastojak koji se tradicionalno koristi u kozmetici</p>
-                    </div>
-                    <div class="item">
-                        <p class="item__descr title-color"><span class="text-bold">Ekstrakt ginka bilobe,</span><br>biljni ekstrakt u sastavu gela</p>
+                        <p class="item__descr title-color"><span class="text-bold">Kapsaicin,</span><br>blaga toplota tokom masaže – baš ono što prija posle dugog dana ili hladnog vremena</p>
                     </div>
                 </div>
                 <div class="solution__row">
                     <div class="item">
-                        <p class="item__descr title-color"><span class="text-bold">Kofein,</span><br>čest sastojak kozmetičkih gelova</p>
+                        <p class="item__descr title-color"><span class="text-bold">Ekstrakt divljeg kestena,</span><br>biljni sastojak koji se tradicionalno koristi u kozmetici za negu kože</p>
                     </div>
                     <div class="item">
-                        <p class="item__descr title-color"><span class="text-bold">Lako se nanosi,</span><br>brzo se upija i pogodan je za masažu kolena, leđa, vrata i ramena</p>
+                        <p class="item__descr title-color"><span class="text-bold">Ekstrakt ginka bilobe,</span><br>uz divlji kesten čini biljnu osnovu gela</p>
+                    </div>
+                </div>
+                <div class="solution__row">
+                    <div class="item">
+                        <p class="item__descr title-color"><span class="text-bold">Kofein,</span><br>sastojak koji se često koristi u kozmetičkim gelovima za masažu</p>
+                    </div>
+                    <div class="item">
+                        <p class="item__descr title-color"><span class="text-bold">Lako se nanosi,</span><br>brzo se upija – ne čekate da se osuši, odmah se oblačite i nastavljate dan</p>
                     </div>
                 </div>
             </div>
-            <h3 class="solution__foot-title title-color"><span class="main-color">Osteon</span> – deo Vaše svakodnevne rutine nege</h3>
+            <h3 class="solution__foot-title title-color">Dva osećaja u jednoj masaži: <span class="main-color">prvo svežina, zatim prijatna toplota</span></h3>
             <div class="center">
-                <button class="btn btn-solution ever-popup-btn">Poručite<br><span class="btn__small">sa popustom</span>
+                <button class="btn btn-solution ever-popup-btn">Poručite<br><span class="btn__small">za 2000 RSD</span>
                 </button>
             </div>
         </div>
@@ -580,8 +622,8 @@
                     <div class="reviews__info">
                         <p class="reviews__about">Gordana, Novi Sad</p>
                         <p class="reviews__age">42 godine</p>
-                        <p class="reviews__quotes">Gel mi je postao deo svakodnevice</p>
-                        <p class="reviews__text reviews__text-1">Za Osteon sam čula od prijateljice. Gel nanosim ujutru i uveče na kolena i lagano umasiram – mentol daje prijatan osećaj svežine. Sviđa mi se što je jednostavan za upotrebu i što mi je ta kratka masaža postala mali ritual nege. Paket je stigao bez problema, a platila sam tek kada sam ga preuzela.
+                        <p class="reviews__quotes">Bila sam sumnjičava – ali ništa nisam plaćala unapred</p>
+                        <p class="reviews__text reviews__text-1">Iskreno, nisam sklona kupovini preko interneta. Ali ovde se ništa ne plaća unapred: operater me je pozvao, sve mi objasnio, a platila sam kuriru tek kada sam preuzela paket. Gel nanosim ujutru i uveče na kolena i lagano umasiram – mentol daje prijatan osećaj svežine, a ta kratka masaža mi je postala mali ritual nege.
                         </p>
                         <div class="reviews__plus">+</div>
                     </div>
@@ -613,6 +655,36 @@
         </div>
     </section>
 
+    <!-- NOVA SEÇÃO: EXPECTATIVA HONESTA (credibilidade) -->
+    <section class="block" id="iskreno">
+        <div class="container">
+            <h2 class="title">Iskreno: šta <span class="main-color">Osteon</span> jeste, a šta nije</h2>
+            <p class="ost-lead">Pre nego što poručite, želimo da tačno znate šta dobijate – bez velikih obećanja.</p>
+            <div class="ost-cards">
+                <div class="ost-card">
+                    <p class="ost-card__tag ost-yes">✓ Jeste</p>
+                    <p class="ost-card__title">Gel za svakodnevnu masažu</p>
+                    <p>Kozmetički gel sa mentolom i kapsaicinom za negu kože u predelu kolena, leđa, vrata i ramena.</p>
+                </div>
+                <div class="ost-card">
+                    <p class="ost-card__tag ost-yes">✓ Jeste</p>
+                    <p class="ost-card__title">Jednostavan za upotrebu</p>
+                    <p>Mala količina gela, dva minuta masaže, do 3 puta dnevno. Bez pripreme i bez komplikovanih pravila.</p>
+                </div>
+                <div class="ost-card">
+                    <p class="ost-card__tag ost-no">✕ Nije</p>
+                    <p class="ost-card__title">Lek ni zamena za terapiju</p>
+                    <p>Osteon ne leči i ne zamenjuje savet lekara. Ako imate zdravstvene tegobe, obratite se lekaru.</p>
+                </div>
+                <div class="ost-card">
+                    <p class="ost-card__tag ost-no">✕ Nije</p>
+                    <p class="ost-card__title">Rizik za Vaš novčanik</p>
+                    <p>Ne plaćate ništa unapred, a posle prijema imate zakonsko pravo na odustanak od 14 dana.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- NOVA SEÇÃO: SEGURANÇA COD -->
     <section class="block wave" id="placanje">
         <div class="container">
@@ -632,8 +704,8 @@
                     <p>Operater Vas poziva, proverava podatke i odgovara na pitanja pre nego što paket krene.</p>
                 </div>
                 <div class="ost-card">
-                    <p class="ost-card__title">Vaša prava su zaštićena</p>
-                    <p>Pravo na odustanak i reklamaciju ostvarujete u skladu sa Zakonom o zaštiti potrošača. <a href="uslovi-koriscenja.html" style="text-decoration:underline;color:inherit;">Pročitajte uslove</a>.</p>
+                    <p class="ost-card__title">14 dana za odustanak</p>
+                    <p>Po Zakonu o zaštiti potrošača imate 14 dana od prijema da odustanete od kupovine neotvorenog proizvoda. <a href="uslovi-koriscenja.html" style="text-decoration:underline;color:inherit;">Pročitajte uslove</a>.</p>
                 </div>
             </div>
         </div>
@@ -654,6 +726,14 @@
                 <details class="ost-faq__item">
                     <summary class="ost-faq__q">Šta se dešava kada popunim formular?</summary>
                     <p class="ost-faq__a">Operater Vas poziva na ostavljeni broj telefona, potvrđuje porudžbinu i adresu za dostavu, a zatim paket šalje kurirska služba. Ako ste pogrešili u podacima, pošaljite formular ponovo – operater će sve proveriti u pozivu.</p>
+                </details>
+                <details class="ost-faq__item">
+                    <summary class="ost-faq__q">Kada stiže paket?</summary>
+                    <p class="ost-faq__a">Posle potvrde u pozivu paket šalje kurirska služba na adresu koju ste naveli, bilo gde u Srbiji. Tačan rok dostave operater Vam kaže u pozivu, a kurir Vas po pravilu zove na dan dostave.</p>
+                </details>
+                <details class="ost-faq__item">
+                    <summary class="ost-faq__q">Šta ako se predomislim?</summary>
+                    <p class="ost-faq__a">Dok operater ne potvrdi porudžbinu, nemate nikakvu obavezu. Posle prijema imate zakonsko pravo na odustanak od 14 dana za neotvoren proizvod, u skladu sa Zakonom o zaštiti potrošača.</p>
                 </details>
                 <details class="ost-faq__item">
                     <summary class="ost-faq__q">Da li je Osteon lek?</summary>
@@ -700,6 +780,17 @@
         <div class="container">
             <h2 class="title title-attention"><span class="attention-color">Iskoristite</span> promotivnu cenu</h2>
             <p class="attention__text">Osteon cena je sada 2000 RSD umesto 4000 RSD – promotivna cena važi dok traje akcija. Poručite danas i platite tek kada preuzmete paket.</p>
+            <div class="ost-stack">
+                <p class="ost-stack__title">Kada poručite danas, dobijate:</p>
+                <ul class="ost-stack__list">
+                    <li>Osteon gel, tuba 100 ml – po promotivnoj ceni od 2000 RSD</li>
+                    <li>Poziv operatera koji potvrđuje porudžbinu i objašnjava upotrebu</li>
+                    <li>Dostavu kurirskom službom na Vašu adresu, bilo gde u Srbiji</li>
+                    <li>Plaćanje tek pri preuzimanju – bez avansa i bez kartice</li>
+                    <li>Zakonsko pravo na odustanak od 14 dana</li>
+                </ul>
+                <p class="ost-stack__cta">Ostavite ime i telefon u formularu ispod – traje manje od minuta.</p>
+            </div>
         </div>
     </section>
 
@@ -710,12 +801,13 @@
             </div>
             <div class="header__content">
                 <div class="header__about">
-                    <h2 class="header__title"><span class="main-color">Osteon —</span> gel za negu zglobova</h2>
+                    <h2 class="header__title"><span class="main-color">Osteon gel</span> za zglobove</h2>
+                    <p class="ost-hero-sub">Poslednji korak: <b>ime i telefon – plaćate tek kuriru.</b></p>
                     <ul class="header__features">
-                        <li class="header__features-item"><b>Osećaj svežine</b> zahvaljujući mentolu</li>
-                        <li class="header__features-item"><b>Prijatna toplota</b> uz kapsaicin</li>
-                        <li class="header__features-item"><b>Ginko biloba i divlji kesten</b> u formuli</li>
-                        <li class="header__features-item"><b>Plaćanje pouzećem</b> – ništa ne plaćate unapred</li>
+                        <li class="header__features-item"><b>Hladno–toplo formula</b> – mentol osveži, kapsaicin zagreje</li>
+                        <li class="header__features-item"><b>Operater Vas zove</b> pre slanja paketa</li>
+                        <li class="header__features-item"><b>Dostava na adresu</b> širom Srbije</li>
+                        <li class="header__features-item"><b>Ni dinar unapred</b> – plaćate kuriru</li>
                     </ul>
                 </div>
                 <div class="header__prod">
@@ -740,15 +832,15 @@
                     <div class="form__body">
                         <form action="/land/order" method="POST" class="x_order_form al-form" id="form">
                             <select name="country" class="al-country" style="display: none;"></select>
-                            <p class="form__text">Kako Vam se obraćati?
+                            <p class="form__text">Ostavite ime i telefon – operater Vas zove radi potvrde
                             </p>
                             <label class="form__label form__label--name"><input type="text" name="name" placeholder="Moje ime" required="" autocomplete="name"></label>
                             <label class="form__label form__label--tel"><input type="tel" name="phone" placeholder="Moj telefon" required="" autocomplete="tel"></label>
-                            <button class="btn">Poručite <span class="btn__small">sa popustom</span></button>
+                            <button class="btn">Poručite <span class="btn__small">plaćate kuriru</span></button>
                             <p class="form__lastpack">Podatke koristimo samo da bismo Vas pozvali radi potvrde i dostave porudžbine.</p>
                         </form>
                     </div>
-                    <p class="form__footer">Plaćanje pouzećem – plaćate pri preuzimanju</p>
+                    <p class="form__footer">Bez avansa i bez kartice – plaćate pri preuzimanju</p>
                 </div>
             </div>
             <div class="header__woman"><img src="img/girl-header.png" alt="" loading="lazy" decoding="async"></div>
@@ -772,6 +864,28 @@
             <p class="ost-ftr__copy">© 2026 Osteon RS. Sva prava zadržana.</p>
         </div>
     </footer>
+
+    <!-- CTA FIXO MOBILE: some quando algum formulário está visível -->
+    <div class="ost-sticky" id="ost-sticky">
+        <div class="ost-sticky__info"><b>2000 RSD</b>Plaćate pri preuzimanju</div>
+        <a href="#form" class="ost-sticky__btn">Poručite</a>
+    </div>
+    <script>
+    (function(){
+        var bar = document.getElementById('ost-sticky');
+        bar.querySelector('a').addEventListener('click', function(e){
+            e.preventDefault();
+            document.getElementById('form').scrollIntoView({behavior:'smooth', block:'center'});
+        });
+        if (!('IntersectionObserver' in window)) return;
+        var visible = new Set();
+        var io = new IntersectionObserver(function(entries){
+            entries.forEach(function(en){ en.isIntersecting ? visible.add(en.target) : visible.delete(en.target); });
+            bar.classList.toggle('is-hidden', visible.size > 0);
+        });
+        Array.prototype.forEach.call(document.querySelectorAll('.form'), function(f){ io.observe(f); });
+    })();
+    </script>
 </body>
  
 </html>
