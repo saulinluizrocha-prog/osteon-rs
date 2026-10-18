@@ -667,16 +667,16 @@ img {
 }
 
 .btn {
-    background: -webkit-gradient(linear, left top, right top, color-stop(0, #dd3472), color-stop(50%, #ff5594), to(#dd3472));
-    background: linear-gradient(to right, #dd3472 0, #ff5594 50%, #dd3472 100%);
+    background: -webkit-gradient(linear, left top, right top, color-stop(0, #1e9c57), color-stop(50%, #2fc172), to(#1e9c57));
+    background: linear-gradient(to right, #1e9c57 0, #2fc172 50%, #1e9c57 100%);
     padding: 8px 20px 10px;
     border-radius: 5px;
     font-size: 28px;
     font-weight: 900;
     color: #fff;
     line-height: 1;
-    -webkit-box-shadow: 0 5px 0 #c62963, 0 20px 16px -7px rgba(198, 41, 99, .28);
-            box-shadow: 0 5px 0 #c62963, 0 20px 16px -7px rgba(198, 41, 99, .28);
+    -webkit-box-shadow: 0 5px 0 #147a42, 0 20px 16px -7px rgba(20, 122, 66, .28);
+            box-shadow: 0 5px 0 #147a42, 0 20px 16px -7px rgba(20, 122, 66, .28);
     margin-bottom: 20px;
     cursor: pointer;
     width: 100%;
@@ -687,8 +687,8 @@ img {
 }
 
 .btn:hover {
-    -webkit-box-shadow: 0 5px 0 #c62963, 0 0 16px -7px rgba(198, 41, 99, 0);
-            box-shadow: 0 5px 0 #c62963, 0 0 16px -7px rgba(198, 41, 99, 0);
+    -webkit-box-shadow: 0 5px 0 #147a42, 0 0 16px -7px rgba(20, 122, 66, 0);
+            box-shadow: 0 5px 0 #147a42, 0 0 16px -7px rgba(20, 122, 66, 0);
     -webkit-transition: .3s;
     transition: .3s
 }
@@ -699,8 +699,8 @@ img {
 }
 
 .btn:active {
-    -webkit-box-shadow: 0 0 0 #c62963, 0 0 16px -7px rgba(198, 41, 99, 0);
-            box-shadow: 0 0 0 #c62963, 0 0 16px -7px rgba(198, 41, 99, 0);
+    -webkit-box-shadow: 0 0 0 #147a42, 0 0 16px -7px rgba(20, 122, 66, 0);
+            box-shadow: 0 0 0 #147a42, 0 0 16px -7px rgba(20, 122, 66, 0);
     -webkit-transition: .1s;
     transition: .1s;
     -webkit-transform: translateY(5px);
